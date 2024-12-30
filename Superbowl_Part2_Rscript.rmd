@@ -1,0 +1,255 @@
+---
+title: "Superbowl_Part2_Rscript"
+author: "Venkata Surendra Reddy Gujjula"
+date: "05-Feb-2024"
+output:
+  html_document: default
+editor_options:
+  chunk_output_type: console
+---
+ 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+Use control+Enter to run the code chunks on PC.
+Use command+Enter to run the code chunks on MAC.
+
+## Load Packages
+
+In this section, we install and load the necessary packages. 
+
+```{r libraries, message=FALSE, include = FALSE}
+### Install packages. If you haven't install the dplyr package, please uncomment the line below to install it.
+#install.packages('dplyr') # required only once.
+
+### load libraries for use in current working session
+library('dplyr')
+library('ggplot2')
+
+```
+
+## Import Data
+
+In this section, we import the necessary data for this lab.
+
+```{r import, include=FALSE}
+### set your working directory
+# use setwd to set your working directory
+
+# you can also go to session-> set working directory -> choose directory
+# working directory is the path to the folder and not file
+
+# If you would like to get the current working directory, run the following line
+getwd() 
+
+# make sure the path of the directory is correct, i.e., where you have stored your data
+setwd("D:/04-R-FUND OF BA/Data")
+
+### import data file
+# read the movies file using read.csv
+superbowl <- read.csv(file = "superbowl.csv",fileEncoding = 'UTF-8-BOM')
+
+```
+
+# Homework Assignment 2: Super Bowl Caselet (Part 2)
+
+You are hired as a Business Analyst to help the manager to find out if spending millions of dollars on Super Bowl ads creates social media buzz.
+
+As a second step, carry out descriptive analysis on superbowl.csv data. There are some questions for each sections that you need to answer.
+
+## Section 1: Univariate Statistics
+
+Task 1, compute the *mean*, *variance*, and *standard deviation* of **adspend** for each **new_brand** before the Super Bowl and after the Super Bowl. Hint: you may use dplyr functions group_by() and summarise(). 
+
+Note that the superbowl column is 0 for the weeks before super bowl and 1 for the weeks of or after super bowl.
+
+```{r **Task 1, Section 1**}
+superbowl %>%
+  group_by(new_brand, superbowl) %>%
+  summarise(
+    mean_adspend = mean(adspend),
+    variance_adspend = var(adspend),
+    sd_adspend = sd(adspend)
+  )
+
+```
+
+
+Task 2, compute the *mean* and *standard deviation* of **volume** (the number of total mentions form social media), **pos** (the number of positive mentions) and **neg** (the number of negative mentions) for each **new_brand** before the Super Bowl and after the Super Bowl.
+
+```{r **Task 2, Section 1**}
+superbowl %>%
+  group_by(new_brand, superbowl) %>%
+  summarise(
+    mean_volume = mean(volume),
+    sd_volume = sd(volume),
+    mean_pos = mean(pos),
+    sd_pos = sd(pos),
+    mean_neg = mean(neg),
+    sd_neg = sd(neg)
+  )
+
+```
+
+
+Then, answer the following questions. Please write your answers after **Response**:
+
+**Questions**: 
+
+1. What brand has the **highest mean ad spend** after the Super Bowl? Has the mean ad spending increased after the Super Bowl for that brand? By how much?
+
+2. What brand has the **highest mean** volume of mentions after the Super Bowl? What brand has the **lowest mean** volume of **positive** mentions after the Super Bowl?
+
+
+**Responses**: 
+**PLEASE ADD YOUR RESPONSES HERE**
+
+1.'Beetle' has the highest mean as spend after the Super Bowl. Yes the mean ad spend is increased after the Super Bowl which is 891-2.17=888.83.
+
+
+2. 'Camaro' has the highest mean volume of mentions after the Super Bowl which is 93613.'CR-Z' has the lowest mean volume of positive mentions after the Super Bowl. 
+
+
+
+
+### Section 2: Bivariate Statistics
+
+Task 1, compute the *correlation* between **adspend** and **volume** in superbowl dataset, before the Super Bowl and after the Super Bowl. Similarly, compute the *correlation* between **adspend** and **pos**, and between  **adspend** and **neg** in superbowl dataset, before the Super Bowl and after the Super Bowl. Hint: you may use dplyr functions group_by() and summarise().
+
+```{r **Task 1, Section 2**}
+superbowl %>%
+  group_by(superbowl) %>%
+  summarise(
+    cor_adspend_volume = cor(adspend, volume),
+    cor_adspend_pos = cor(adspend, pos),
+    cor_adspend_neg = cor(adspend, neg)
+  )
+
+
+```
+
+Task 2, for each **new_brand**, compute the *correlation* between **adspend** and **volume**, between **adspend** and **pos**, and between **adspend** and **neg**, before the Super Bowl and after the Super Bowl.
+
+```{r **Task 2, Section 2**}
+superbowl %>%
+  group_by(new_brand, superbowl) %>%
+  summarise(
+    cor_adspend_volume = cor(adspend, volume),
+    cor_adspend_pos = cor(adspend, pos),
+    cor_adspend_neg = cor(adspend, neg)
+  )
+
+
+```
+
+Then, answer the following questions. Please write your answers after **Response**:
+
+**Questions**: 
+
+1. What is the *correlation* between **adspend** and **pos** before AND after the Super Bowl? Does that imply a positive, negative or no relationship? Is the relationship strong? What about the relationship between **adspend** and **neg** before AND after the Super Bowl?
+
+2. Which brand's ad spending did actually create a social media buzz (either positive or negative mentions)? Use both univariate and bivariate statistics for each brand to support your answer. 
+
+**Responses**: 
+**PLEASE ADD YOUR RESPONSES HERE**
+
+1.The correlation between 'adspend' and 'pos' is strong and positive correlation of 0.975 which is a very strong positive linear relationship between ad spending and the number of positive mentions before the Super Bowl.After the Super Bowl the correlation is positive but weak which is 0.0536 indicates a weak positive linear relationship. The strength of the relationship has substantially decreased.
+
+The correlation between 'adspend' and 'neg' is strong and positive correlation of 0.979 which is a very strong positive linear relationship between ad spending and the number of positive mentions before the Super Bowl.After the Super Bowl the correlation is positive but weak which is 0.0495 indicates a weak positive linear relationship. The strength of the relationship has substantially decreased.
+
+
+
+2.'Beetle' adspend has created a social media buzz when compare to the other two brands.We can observe this in the both positive and negative emotions there is significant change in correlation. For positive emotions before Super Bowl it is weak negative correlation(-0.339) and after the Super Bowl it is moderate positive correlation(0.470) and if we consider the numbers in univariate the positive emotions are increased from 659 to 965 which is 46.52% increase in the emotions which means it created a much good impact on social media.
+
+Even though the numbers are high for the 'Camaro' but the change is very minimal the adspend has no much impact on the values as the correlation of positive emotions before the Super Bowl is very weak positive(0.0569) and after the Super Bowl the just positive(0.116) there is no much significant change and also if we consider the univariate positive emotions numbers which is increased from 21432 to 23509 which is 9.68% increase which is not much for the adspend.
+
+In conclusion 'Beetle' adspend has created more social media buzz in volume,positive and negative emotions.
+
+```{r **Task3 , Section1 **}
+
+
+ superbowl %>%
+       filter(new_brand == "Beetle") %>%
+       select(time, volume, new_brand,adspend)
+
+
+```
+
+
+```{r **Task4 , Section **}
+
+
+ superbowl %>%
+       filter(new_brand == "Camaro") %>%
+       select(time, volume, new_brand,adspend)
+
+
+```
+
+```{r BarPlot1 }
+
+ggplot(superbowl %>% filter(new_brand=="Camaro"), aes(x = time, y = volume)) + 
+  geom_bar(position = "dodge", stat = "identity",fill="Orange"  ) +
+  labs(title = "Volume by Week of Camaro",
+       x = "Week",
+       y = "Volume") +
+  theme_minimal()
+
+```
+
+
+
+```{r BarPlot2}
+
+
+
+ggplot(superbowl %>% filter(new_brand=="Beetle"), aes(x = time, y = volume)) + 
+  geom_bar(position = "dodge", stat = "identity",  fill = "Blue") +
+  labs(title = "Volume by Week of Beetle",
+       x = "Week",
+       y = "Volume") +
+  theme_minimal()
+
+
+
+```
+
+
+
+```{r ScatterPlot1}
+
+
+
+ggplot(superbowl %>% filter(new_brand=="Camaro"), aes(x = adspend, y = volume)) + 
+  geom_point() + 
+  scale_x_log10() + 
+  geom_smooth(method = "lm", se = FALSE, colour = "Orange") +
+  labs(title = "AdSpend Vs Volume of Camaro") + 
+  ylab("Adspend") + 
+  xlab("Volume") 
+
+
+
+```
+
+
+```{r ScatterPlot2}
+
+ggplot(superbowl %>% filter(new_brand=="Beetle"), aes(x = adspend, y = volume)) + 
+  geom_point() + 
+  scale_x_log10() + 
+  geom_smooth(method = "lm", se = FALSE, colour = "Blue") +
+  labs(title = "AdSpend Vs Volume of Beetle") + 
+  ylab("Adspend") + 
+  xlab("Volume") 
+
+
+```
+

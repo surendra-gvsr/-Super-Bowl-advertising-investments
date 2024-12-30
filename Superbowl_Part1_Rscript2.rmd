@@ -1,0 +1,141 @@
+---
+title: "Superbowl_Part1_Rscript"
+author: "Venkata Surendra Reddy Gujjula"
+date: "01-31-2024"
+output:
+  html_document: default
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+Use control+Enter to run the code chunks on PC.
+Use command+Enter to run the code chunks on MAC.
+
+## Load Packages
+
+In this section, we install and load the necessary packages. 
+
+```{r libraries, message=FALSE, include = FALSE}
+### Install packages. If you haven't install the dplyr package, please uncomment the line below to install it. 
+#Attention: Before knitting, make sure to comment out the following line.
+#install.packages('dplyr') # required only once.
+
+### load libraries for use in current working session
+library('dplyr')
+```
+
+## Import Data
+
+In this section, we import the necessary data for this lab.
+
+```{r import, include=FALSE}
+### set your working directory
+# use setwd to set your working directory
+
+# you can also go to session-> set working directory -> choose directory
+# working directory is the path to the folder and not file
+
+# make sure the path of the directory is correct, i.e., where you have stored your data
+
+setwd("D:/04-R-FUND OF BA/Data")
+
+# If you would like to get your current working directory, run the following line
+getwd() 
+
+### import data file
+# read the movies file using read.csv
+superbowl <- read.csv(file = "superbowl.csv",fileEncoding = 'UTF-8-BOM')
+```
+
+# Homework Assignment 1: Super Bowl Caselet (Part 1)
+
+You are hired as a Business Analyst to help the manager to find out if spending millions of dollars on Super Bowl ads creates social media buzz.
+
+As a first step, carry out the analysis using DPLYR using superbowl.csv data. There are some questions below that you need to answer.
+
+## Dataset Exploration
+```{r explore}
+
+# Use five functions dim(), colnames(), str(), head() and tail() to explore all the superbowl table
+# observe different columns of the table and values in the rows
+# type your answer below this line
+dim(superbowl)
+colnames(superbowl)
+str(superbowl)
+head(superbowl)
+tail(superbowl)
+
+
+# tell R, new_brand, month and superbowl columns are factor 
+superbowl$new_brand <- as.factor(superbowl$new_brand)
+superbowl$month     <- as.factor(superbowl$month)
+superbowl$superbowl <- as.factor(superbowl$superbowl)
+
+
+
+# tell R, week_of is date of format "%d-%b-%y"
+
+superbowl$week_of <- as.Date(superbowl$week_of,  "%d-%b-%y")
+
+
+# you can try and experiment with different date formats here: 
+# https://campus.datacamp.com/courses/intermediate-r-for-finance/dates?ex=6
+
+
+```
+
+## Five Functions of DPLYR
+
+```{r DPLYR Basics1}
+
+# Query 1. Filter all rows where new_brand == 'Beetle'
+# type your answer below this line
+filter(superbowl, new_brand=='Beetle')
+
+
+```
+
+### interpret the results:  Here we are focusing on 'Beetle' brand and its corresponding data. I would say that the 'Beetle' brand done well with the marketing during the super bowl the ad spend is high but we can see the impact of it during the following weeks as the volume gets increased while the adspent decreased after 2012-01-30.The positive emotions are good and mixed emotions has major part of the volume. The highest adspend week is 2012-01-30 after that the adspend is decreased but the impact is there on the social media we can see the volume is good even though there is not much adspend.This says 'Beetle' brand has got good out of the marketing during the Superbowl week. There is a dip in volume at the last week we might investigate little bit on that and take feedback and continue working on it.
+
+```{r DPLYR Basics2}
+# Query 2.Select all the columns related to buzz metrics (volume, positive and negative mentions)
+# type your answer below this line
+select(superbowl, volume, pos, neg)
+
+```
+### interpret the results: Here we are focusing on the volume on the social media and with how many of them are positive emotions and how many of them are negative emotions. There is good spike in the volume of some weeks which tells us the marketing stratergy has good results for the brands but not sure which brand is performed well.We need to further investigate the volume for each brand and which brand stratergy has worked out well. 
+
+
+```{r DPLYR Basics3}
+# Query 3. Arrange the adspend column in descending order and see which brand has the highest ad spend and in which week_of
+# type your answer below this line
+arrange(superbowl, desc(adspend))
+
+
+
+```
+### interpret the results: Here we get the data of highest adspend brand which is 'Beetle' in the week of 30-Jan-12 and next 'Camaro' but we can clearly see that 'Camaro' performed well even though the adspend is less compared to 'Beetle' it performed really well during the superbowl week it has the highest volume and most positive emotions on social media. 'Camaro' adspend and its volume ratio is good when compared to other two brands.'Beetle' done a decent job.'CR-Z' has got less volume which we need to investigate further while its adspend is less when compared to other two brands but it has not got attention on the Social media. One major reason might be that it hasn't spent a good amount on ads during the superbowl week. 
+
+
+```{r DPLYR Basics4}
+# Query 4. Create a new column called sentiment which is a sum of positive (column name is pos) and negative (column name is neg) mentions,
+# and select only three columns for display, week_of, new_brand and sentiment
+# type your answer below this line
+superbowl %>% mutate(sentiment=pos+neg) %>% select(week_of,new_brand,sentiment) 
+
+```
+### interpret the results: Here we can see that 'Camaro' got good sentiment during almost every week it clearly got the attention on social media. 'Beetle' got good sentiment during some weeks and the other weeks it was okay.'CR-Z' got not much attention during any of the week.One thing to note is that the adspend is also less for 'CR-Z'.
+
+
+
+
