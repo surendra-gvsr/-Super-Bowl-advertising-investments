@@ -1,7 +1,6 @@
 ---
 title: "Superbowl_Part2_Rscript"
 author: "Venkata Surendra Reddy Gujjula"
-date: "05-Feb-2024"
 output:
   html_document: default
 editor_options:
