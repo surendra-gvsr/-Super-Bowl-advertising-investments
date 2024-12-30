@@ -1,11 +1,4 @@
----
-title: "Superbowl_Part1_Rscript"
-author: "Venkata Surendra Reddy Gujjula"
-output:
-  html_document: default
-editor_options:
-  chunk_output_type: console
----
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
